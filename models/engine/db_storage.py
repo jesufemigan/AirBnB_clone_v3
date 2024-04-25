@@ -23,6 +23,11 @@ class DBStorage:
     """This class manages database storage for hbnb clone"""
     __engine = None
     __session = None
+    classes = {
+            'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
 
     def __init__(self):
         """Constructor"""
@@ -35,15 +40,11 @@ class DBStorage:
     def all(self, cls=None):
         """query the current database session"""
         new_dict = {}
-        classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
+        
         if cls:
             classes_to_query = [cls]
         else:
-            classes_to_query = list(classes.values())
+            classes_to_query = list(self.classes.values())
         for cls_attr in classes_to_query:
             all_objects = self.__session.query(cls_attr).all()
             for object in all_objects:
@@ -75,3 +76,13 @@ class DBStorage:
     def close(self):
         """stop all transactions in the database"""
         self.__session.close()
+        
+    def get(self, cls, id):
+        """retrives one object"""
+        get_obj = self.__session.query(cls).filter_by(id=id).all()[0]
+        return get_obj
+    
+    def count(self, cls=None):
+        """counts number of objects in storage matching given class"""
+        cls_obj = self.all(cls)
+        return len(cls_obj)
