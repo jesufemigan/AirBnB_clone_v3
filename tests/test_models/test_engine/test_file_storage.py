@@ -2,6 +2,7 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 import os
 
@@ -107,3 +108,15 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+        
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == 'db', 'NO DB')
+    def test_get_method(self):
+        """Test get method"""
+        user = User(name="Bob")
+        user.save()
+        self.assertEqual(user, storage.get(User, user.id))
+        
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == 'db', 'NO DB')
+    def test_count_method(self):
+        """Test count method"""
+        self.assertEqual(len(storage.all()), storage.count())

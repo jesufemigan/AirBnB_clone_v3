@@ -2,6 +2,7 @@
 """a module that tests dbstorage"""
 import unittest
 import MySQLdb
+import models
 from models.base_model import BaseModel, Base
 from models.amenity import Amenity
 from models.city import City
@@ -89,6 +90,20 @@ class TestDBStorage(unittest.TestCase):
         self.cur.execute("SELECT * FROM states")
         states = self.cur.fetchall()
         self.assertEqual(len(states), 1)
+        
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+    def test_get_method(self):
+        """test to check if object is being retrieved based on id"""
+        state = State(name="Alabama")
+        state.save()
+        created_state = models.storage.get(State, state.id)
+        self.assertEqual(state, created_state)
+    
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db', 'NO DB')
+    def test_count_method(self):
+        """test to check if object is being retrieved based on id"""
+        self.assertEqual(len(models.storage.all()), models.storage.count())
+        
 
 
 if __name__ == '__main__':
