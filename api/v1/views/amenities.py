@@ -12,7 +12,7 @@ def get_amenites():
     amenities = storage.all(Amenity).values()
     list = []
     for amenity in amenities:
-        list.append(amenity.to_dict)
+        list.append(amenity.to_dict())
     return jsonify(list)
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
@@ -21,7 +21,7 @@ def get_amenity(amenity_id):
     amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
         abort(404)
-    return jsonify(amenity.to_dict)
+    return jsonify(amenity.to_dict())
 
 @app_views.route('/amenities', methods=['DELETE'], strict_slashes=False)
 def del_amenity(amenity_id):
@@ -42,7 +42,7 @@ def post_amenity():
     input = request.get_json()
     ins = Amenity(**input)
     ins.save()
-    return make_response(jsonify(ins.to_dict), 201)
+    return make_response(jsonify(ins.to_dict()), 201)
 
 @app_views.route('/amenities', methods=['PUT'], strict_slashes=False)
 def put_amenity(amenity_id):
@@ -60,4 +60,4 @@ def put_amenity(amenity_id):
         if k not in ignore:
            setattr(amenity, k, v)
     storage.save()
-    return make_response(jsonify(amenity.to_dict), 200)
+    return make_response(jsonify(amenity.to_dict()), 200)
