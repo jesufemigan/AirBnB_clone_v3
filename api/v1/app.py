@@ -13,11 +13,13 @@ PORT = getenv('HBNB_API_PORT') if getenv('HBNB_API_PORT') else 5000
 app = Flask(__name__)
 app.register_blueprint(app_views)
 
+
 @app.teardown_appcontext
 def close_db(exc):
     """closes the database session"""
     storage.close()
-    
+
+
 @app.errorhandler(404)
 def not_found():
     """Error page Not found"""

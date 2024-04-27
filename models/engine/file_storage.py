@@ -64,7 +64,7 @@ class FileStorage:
         self.reload()
         
     def get(self, cls, id):
-        """retrieves one object"""
+        """retrieves one object""" 
         obj_for_class = {}
         for key, value in self.__objects.items():
             if value.__class__ == cls:
