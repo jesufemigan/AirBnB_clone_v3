@@ -34,7 +34,7 @@ def del_state(state_id):
     storage.save()
     return (make_response(jsonify({}), 200))
 
-@app_views.route('/states', method=['POST'], strict_slashes=False)
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
 def new_state():
     """ Creates a State"""
     if not request.get_json:

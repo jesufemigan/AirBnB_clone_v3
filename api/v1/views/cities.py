@@ -8,7 +8,7 @@ from api.v1.views import app_views
 from models import storage
 
 
-@app_views.route('/states/<states_id>/cities', methods=['GET'], stirct_slashes=False)
+@app_views.route('/states/<states_id>/cities', methods=['GET'], strict_slashes=False)
 def all_city(states_id):
     """ Retrieves the list of all City objects of a State"""
     state = storage.get(State, states_id)
@@ -19,7 +19,7 @@ def all_city(states_id):
         list_cities.append(city.to_dict())
     return jsonify(list_cities)
 
-@app_views.route('/cities/<cities_id>', methdos=['GET'], strict_slashes=False)
+@app_views.route('/cities/<cities_id>', methods=['GET'], strict_slashes=False)
 def get_city(city_id):
     """ Gets a City object """
     city = storage.get(City, city_id)
