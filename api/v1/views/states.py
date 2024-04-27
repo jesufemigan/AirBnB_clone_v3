@@ -16,15 +16,18 @@ def get_states():
         list_all.append(state.to_dict())
     return(jsonify(list_all))
 
-@app_views.route('/states', methods=['GET'], strict_slashes=False)
+
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def get_state(state_id):
     """ Retrieves a State object """
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    return(jsonify(state.to_dict))
+    return jsonify(state.to_dict())
 
-@app_views.route('/states', methods=['DELETE'], strict_slashes=False)
+
+@app_views.route('/states/<state_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def del_state(state_id):
     """ Deletes an object of State """
     state = storage.get(State, state_id)
@@ -33,6 +36,7 @@ def del_state(state_id):
     storage.delete(state)
     storage.save()
     return (make_response(jsonify({}), 200))
+
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def new_state():
@@ -43,10 +47,12 @@ def new_state():
         abort(404, 'Missing name')
     input = request.get_json
     instance = State(**input)
+    storage.new(instance)
     instance.save()
-    return (make_response(jsonify(instance), 201))
+    return (make_response(jsonify(instance.to_dict()), 201))
 
-@app_views.route('/states', methods=['PUT'], strict_slashes=False)
+
+@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update(state_id):
     """Updates a State object"""
     state = storage.get(State, state_id)
@@ -55,8 +61,9 @@ def update(state_id):
     if not request.get_json:
         abort(404, 'Not a JSON')
     ignore = ['id', 'created_at', 'updated_at']
-    for k, v in state.items():
+    updated_data = request.json
+    for k, v in updated_data.items():
         if k not in ignore:
-            state[k] = v
+            setattr(state, k, v)
     storage.save()
     return make_response(jsonify(state.to_dict()), 200)

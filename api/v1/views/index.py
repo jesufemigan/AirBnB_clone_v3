@@ -2,7 +2,7 @@
 """define route /status"""
 
 from api.v1.views import app_views
-from flask import jsonify
+from flask import jsonify, make_response
 from models import storage
 from models.amenity import Amenity
 from models.city import City
@@ -21,14 +21,10 @@ def api_status():
 @app_views.route('/stats')
 def stats():
     """retrieves number of each objects type"""
-    classes = {'amenities': Amenity,
-               'cities': City,
-               'places': Place,
-               'reviews': Review,
-               'states': State,
-               'users': User}
-    count = {}
-
-    for cls_name, cls in classes.item():
-        count[cls_name] = storage.count(cls)
-    return jsonify(count)
+    return jsonify(amenities=storage.count(Amenity),
+                   cities=storage.count(City),
+                   places=storage.count(Place),
+                   reviews=storage.count(Review),
+                   states=storage.count(State),
+                   users=storage.count(User)
+                   )
