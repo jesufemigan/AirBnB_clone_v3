@@ -27,9 +27,4 @@ def stats():
                    reviews=storage.count(Review),
                    states=storage.count(State),
                    users=storage.count(User)
-    )
-    # count = {}
-
-    # for cls_name, cls in classes.items():
-    #     count[cls_name] = storage.count(cls)
-    # return jsonify(count)
+                   )
