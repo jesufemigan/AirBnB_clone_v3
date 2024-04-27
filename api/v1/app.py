@@ -2,7 +2,7 @@
 """a flask web app"""
 
 from api.v1.views import app_views
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from models import storage
 from os import getenv
 
@@ -23,7 +23,7 @@ def close_db(exc):
 @app.errorhandler(404)
 def not_found():
     """Error page Not found"""
-    return jsonify({"error": "Not found"})
+    return make_response(jsonify({"error": "Not found"}))
 
 
 if __name__ == "__main__":

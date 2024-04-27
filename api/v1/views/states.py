@@ -6,8 +6,8 @@ from models import storage
 from api.v1.views import app_views
 from flask import jsonify, abort, make_response, request
 
-@app_views('/states', methods=['GET'], strict_slashes=False)
 
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_states():
     """ Retrieves the list of all State objects """
     state_all = storage.all(State).values()
@@ -16,7 +16,7 @@ def get_states():
         list_all.append(state.to_dict())
     return(jsonify(list_all))
 
-@app_views('/states', methods=['GET'], strict_slashes=False)
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_state(state_id):
     """ Retrieves a State object """
     state = storage.get(State, state_id)
@@ -24,7 +24,7 @@ def get_state(state_id):
         abort(404)
     return(jsonify(state.to_dict))
 
-@app_views('/states', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/states', methods=['DELETE'], strict_slashes=False)
 def del_state(state_id):
     """ Deletes an object of State """
     state = storage.get(State, state_id)
@@ -34,7 +34,7 @@ def del_state(state_id):
     storage.save()
     return (make_response(jsonify({}), 200))
 
-@app_views('/states', method=['POST'], strict_slashes=False)
+@app_views.route('/states', method=['POST'], strict_slashes=False)
 def new_state():
     """ Creates a State"""
     if not request.get_json:
@@ -46,7 +46,7 @@ def new_state():
     instance.save()
     return (make_response(jsonify(instance), 201))
 
-@app_views('/states', methods=['PUT'], strict_slashes=False)
+@app_views.route('/states', methods=['PUT'], strict_slashes=False)
 def update(state_id):
     """Updates a State object"""
     state = storage.get(State, state_id)
