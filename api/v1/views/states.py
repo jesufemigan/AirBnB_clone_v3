@@ -43,6 +43,7 @@ del new_state():
         abort(404, Missing name)
     input = request.get_json
     instance = State(**input)
+    instance.save()
     return (make_response(jsonify(instance), 201))
 
 @app_views('/states', methods=['PUT'], strict_slashes=False)
