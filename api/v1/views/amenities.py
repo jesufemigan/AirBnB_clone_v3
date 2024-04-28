@@ -47,7 +47,6 @@ def post_amenity():
         abort(404, 'Missing name')
     input = request.get_json()
     ins = Amenity(**input)
-    storage.new(ins)
     ins.save()
     return make_response(jsonify(ins.to_dict()), 201)
 

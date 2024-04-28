@@ -64,7 +64,6 @@ def post_place(city_id):
         abort(404)
     ins = Place(**input)
     ins.city_id = city_id
-    storage.new(ins)
     ins.save()
     return make_response(jsonify(ins.to_dict()), 201)
 

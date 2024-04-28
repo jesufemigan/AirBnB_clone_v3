@@ -53,7 +53,6 @@ def add_city(state_id):
         abort(404, 'Missing name')
     input = request.get_json()
     ins = City(**input)
-    storage.new(ins)
     ins.state_id = state.id
     ins.save()
     return make_response(jsonify(ins.to_dict(), 201))

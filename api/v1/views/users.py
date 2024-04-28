@@ -49,7 +49,6 @@ def post_user():
         abort(404, 'Missing password')
     input = request.get_json()
     ins = User(**input)
-    storage.new(ins)
     ins.save()
     return make_response(jsonify(ins.to_dict()), 201)
 

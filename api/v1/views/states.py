@@ -47,7 +47,6 @@ def new_state():
     if 'name' not in input:
         abort(404, 'Missing name')
     instance = State(**input)
-    storage.new(instance)
     instance.save()
     return (make_response(jsonify(instance.to_dict()), 201))
 
