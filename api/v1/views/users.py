@@ -2,7 +2,7 @@
 """ Create a new view for User object that handles
 all default RESTFul API actions
 """
-from models import User
+from models.user import User
 from models import storage
 from flask import abort, jsonify, make_response, request
 from api.v1.views import app_views
