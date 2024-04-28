@@ -9,7 +9,8 @@ from flask import abort, jsonify, make_response, request
 from api.v1.views import app_views
 
 
-@app_views.route('/places/reviews', methods=['GET'], strict_slashes=False)
+@app_views.route('/places/<place_id>/reviews', methods=['GET'],
+                 strict_slashes=False)
 def get_reviews(place_id):
     """ Retrieves the list of all Review objects of a Place"""
     place = storage.get(Place, place_id)
@@ -63,6 +64,7 @@ def post_review(place_id):
         abort(404)
     ins = Review(**input)
     ins.place_id = place_id
+    ins.user_id = user.id
     ins.save()
     return make_response(jsonify(ins.to_dict()), 201)
 
