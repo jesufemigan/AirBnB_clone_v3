@@ -8,7 +8,8 @@ from api.v1.views import app_views
 from models import storage
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['GET'],
+                 strict_slashes=False)
 def all_cities(state_id):
     """ Retrieves the list of all City objects of a State"""
     state = storage.get(State, state_id)
@@ -40,7 +41,8 @@ def del_city(city_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/states/<states_id>/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['POST'],
+                 strict_slashes=False)
 def add_city(state_id):
     state = storage.get(State, state_id)
     if state is None:
@@ -51,12 +53,13 @@ def add_city(state_id):
         abort(404, 'Missing name')
     input = request.get_json()
     ins = City(**input)
+    storage.new(ins)
     ins.state_id = state.id
-    storage.save()
+    ins.save()
     return make_response(jsonify(ins.to_dict(), 201))
 
 
-@app_views.route('/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 def update_city(city_id):
     city = storage.get(City, city_id)
     if city is None:
