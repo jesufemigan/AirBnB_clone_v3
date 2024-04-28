@@ -15,7 +15,9 @@ def get_amenites():
         list.append(amenity.to_dict())
     return jsonify(list)
 
-@app_views.route('/amenities', methods=['GET'], strict_slashes=False)
+
+@app_views.route('/amenities/<amenity_id>', methods=['GET'],
+                 strict_slashes=False)
 def get_amenity(amenity_id):
     """ Retrieves an A menity object"""
     amenity = storage.get(Amenity, amenity_id)
@@ -23,7 +25,9 @@ def get_amenity(amenity_id):
         abort(404)
     return jsonify(amenity.to_dict())
 
-@app_views.route('/amenities', methods=['DELETE'], strict_slashes=False)
+
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def del_amenity(amenity_id):
     amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
@@ -32,7 +36,9 @@ def del_amenity(amenity_id):
     storage.save()
     return make_response(jsonify({}), 200)
 
-@app_views.route('/amenities', methods=['POST'], strict_slashes=False)
+
+@app_views.route('/amenities', methods=['POST'],
+                 strict_slashes=False)
 def post_amenity():
     """ Creates a Amenity  """
     if not request.get_json():
@@ -41,10 +47,13 @@ def post_amenity():
         abort(404, 'Missing name')
     input = request.get_json()
     ins = Amenity(**input)
+    storage.new(ins)
     ins.save()
     return make_response(jsonify(ins.to_dict()), 201)
 
-@app_views.route('/amenities', methods=['PUT'], strict_slashes=False)
+
+@app_views.route('/amenities/<amenity_id>', methods=['PUT'],
+                 strict_slashes=False)
 def put_amenity(amenity_id):
     """ Updates Amenity object"""
     amenity = storage.get(Amenity, amenity_id)
@@ -58,6 +67,6 @@ def put_amenity(amenity_id):
     input = request.get_json()
     for k, v in input.items():
         if k not in ignore:
-           setattr(amenity, k, v)
+            setattr(amenity, k, v)
     storage.save()
     return make_response(jsonify(amenity.to_dict()), 200)
