@@ -11,7 +11,7 @@ from api.v1.views import app_views
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
 def get_users():
     """ Retrieves the list of all User objects"""
-    users = storage.all(User)
+    users = storage.all(User).values()
     list = []
     for u in users:
         list.append(u.to_dict())
